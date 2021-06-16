@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"ejercicio1","c":"Ej1","l":"Ej1()","url":"%3Cinit%3E()"},{"p":"ejercicio1","c":"Ej1","l":"main(String[])","url":"main(java.lang.String[])"},{"p":"ejercicio1","c":"Ej1","l":"MAXPALABRAS"},{"p":"ejercicio1","c":"Ej1","l":"NUMFRASES"},{"p":"ejercicio1","c":"Ej1","l":"NUMTHREADS"}]
