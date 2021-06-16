@@ -1,6 +1,5 @@
 package ejercicio1;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
