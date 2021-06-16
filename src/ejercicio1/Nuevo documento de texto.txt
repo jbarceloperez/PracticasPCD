@@ -86,3 +86,70 @@ end;
 
 
 # EJERCICIO 1 JAVI #
+
+program ejercicio1;
+
+process type HiloOrdenAlfabetico(id : integer, frases : array[0..49]);
+var
+	
+
+const
+	NUMTHREADS : 50;
+	NUMFRASES : 50;
+
+var
+	thrs : array[1..NUMTHREADS] of HiloOrdenAlfabetico;
+	frases : array[1..NUMFRASES] of string;
+	
+begin
+	//generar array de 50 frases
+	for i:=1 to NUMFRASES do
+		frases[i] := generarFrase();
+	
+	cobegin
+		for i:=1 to NUMTHREADS do
+			thrs[i](i, frases);
+	coend;
+	// mutex
+	
+	writeln("Array");
+	for i:=1 to NUMFRASES do
+		writeln("Frase ",i,": ", frases[i]);
+	writeln("Fin array");
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
