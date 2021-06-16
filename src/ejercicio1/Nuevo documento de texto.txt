@@ -88,6 +88,8 @@ end;
 # EJERCICIO 1 JAVI #
 
 program ejercicio1;
+var
+	l: lock;
 
 process type HiloOrdenAlfabetico(id : integer, frases : array[0..49] of string);
 var
@@ -96,16 +98,18 @@ var
 
 begin
 	frase := frases[id];
-	palabras := frase.split(" ");
-	palabras.sort();
+	palabras := frase.split(" ");	// se separa la cadena original en un array de cadenas formadas
+									// por las diferentes palabras que la formaban separadas por espacios.
+	palabras.sort();	// se ordenan alfabéticamente las diferentes palabras
 	ordenada := palabras[0];
 	for i:=1 to (palabras.length - 1) do
-		ordenada := " " + palabras[i];
-	//frases[id] := ordenada; ???????
+		ordenada := ordenada + " " + palabras[i];
+	l.lock;	//sección crítica al imprimir 
 	writeln("Hilo ID: " + id);
 	writeln("Frase original: " + frase);
 	writeln("Frase ordenada: " + ordenada);
 	writeln("Fin hilo ID: " + id);
+	l.unlock; // fin sección crítica
 end;
 	
 

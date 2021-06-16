@@ -15,6 +15,7 @@ public class Ej1 {
 	public static final int MAXPALABRAS = 10;
 		
 	public static void main(String[] args) {
+		Salida salida = new Salida();
 		String frases[] = new String[NUMFRASES];
 		HiloOrdenAlfabetico[] thrs = new HiloOrdenAlfabetico[NUMTHREADS];
 		
@@ -30,15 +31,32 @@ public class Ej1 {
 			frases[i] = frase;
 		}
 		
+		//Hay que crear los objetos Thread ya que la clase HiloOrdenAlfabetico 
+		//es runnable e inicializarlos todos
+		Thread[] hilos = new Thread[NUMTHREADS];
+		for(int i = 0; i < NUMTHREADS; i++) {
+			thrs[i] = new HiloOrdenAlfabetico(i, frases, salida);
+			hilos[i] = new Thread(thrs[i]);
+			hilos[i].start();	//método run
+		}
 		
+		//Llamamos al método join para que este hilo principal no se siga
+		//ejecutando hasta que el resto de los 50 hilos de orden alfabético
+		//hayan finalizado su ejecución.
+		try {
+			for (Thread t : hilos)
+				t.join();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
-		
-		
-		
+		//Así podemos imprimir por pantalla sin problemas ya que esta sección del
+		//código tiene garantizada la exclusión mútua.
 		System.out.println(" -------- ARRAY -------- ");
 		//IMPRESIÓN DEL ARRAY FRASES
 		for (String f : frases) 
-			System.out.println(f);
+			System.out.println("-" + f);
 		System.out.println(" -------- Fin array. -------- ");
 
 	}
