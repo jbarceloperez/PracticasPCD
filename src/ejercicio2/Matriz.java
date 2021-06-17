@@ -22,6 +22,7 @@ public class Matriz {
 	 */
 	public static Matriz generarMatriz(int tam) {
 		Matriz m = new Matriz();
+		m.valores = new int[tam][tam];
 		Random r = new Random();
 		for (int i = 0; i < tam; i++) 
 			for (int j = 0; j < tam; j++)
@@ -41,10 +42,25 @@ public class Matriz {
 	 */
 	public static Matriz sumaMatrices(Matriz a, Matriz b, int tam) {
 		Matriz c = new Matriz();
+		c.valores = new int[tam][tam];
 		for (int i = 0; i < tam; i++) 
 			for (int j = 0; j < tam; j++)
 				c.valores[i][j] = a.valores[i][j] + b.valores[i][j];
 		return c;
 	}
 	
+	@Override
+	public String toString() {
+		String str = "";
+		int tam = valores[0].length;
+		for (int i = 0; i < tam; i++) {
+			str = str + "[" + valores[i][0];
+			for (int j = 1; j < tam; j++) {
+				
+				str = str + "\t" + valores[i][j];
+			}
+			str = str + "]\n";
+		}
+		return str;
+	}
 }

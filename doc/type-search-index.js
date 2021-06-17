@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"ejercicio1","l":"Ej1"},{"p":"ejercicio1","l":"HiloOrdenAlfabetico"},{"p":"ejercicio1","l":"Palabra"},{"p":"ejercicio1","l":"Salida"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"ejercicio1","l":"Ej1"},{"p":"ejercicio2","l":"Ej2"},{"p":"ejercicio2","l":"HiloMatriz"},{"p":"ejercicio1","l":"HiloOrdenAlfabetico"},{"p":"ejercicio2","l":"Matriz"},{"p":"ejercicio1","l":"Palabra"},{"p":"ejercicio2","l":"Panel"},{"p":"ejercicio1","l":"Salida"}]

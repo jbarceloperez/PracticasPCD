@@ -33,7 +33,7 @@ public class Panel
     
     
     /**
-     * @param Cadena que aparecerá en el título de la ventana
+     * @param _nombre Cadena que aparecerá en el título de la ventana
      * @param posx, coordenada x de la esquina superior izquierda de la ventana
      * @param posy, coordenada y de la esquina superior izquierda de la ventana
      */

@@ -33,6 +33,7 @@ public class HiloOrdenAlfabetico implements Runnable{
 	 * diferentes cadenas, las compara una a una, las ordena y las inserta
 	 * en la posición correspondiente del array.
 	 */
+	@Override
 	public void run() {
 		palabras = frase.split(" ", 0);
 		//La biblioteca Arrays ofrece una manera sencilla de ordenar alfabéticamente

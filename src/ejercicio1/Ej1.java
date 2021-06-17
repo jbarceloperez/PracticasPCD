@@ -13,7 +13,11 @@ public class Ej1 {
 	public static final int NUMFRASES = 50;
 	// cada frase tendra al menos una palabra y como máximo MAXPALABRAS palabras
 	public static final int MAXPALABRAS = 10;
-		
+	
+	/**
+	 * Ejecución principal del programa.
+	 * @param args args
+	 */
 	public static void main(String[] args) {
 		Salida salida = new Salida();
 		String frases[] = new String[NUMFRASES];
