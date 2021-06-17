@@ -1,4 +1,4 @@
-
+package ejercicio2;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -17,7 +17,7 @@ import javax.swing.*;
  * de la que utilizan otros conjuntos de hilos. 
  * 
  * 
- * @author JosŽ Tom‡s Palma
+ * @author José Tomás Palma
  */
 
 public class Panel
@@ -33,7 +33,7 @@ public class Panel
     
     
     /**
-     * @param Cadena que aparecer‡ en el t’tulo de la ventana
+     * @param Cadena que aparecerá en el título de la ventana
      * @param posx, coordenada x de la esquina superior izquierda de la ventana
      * @param posy, coordenada y de la esquina superior izquierda de la ventana
      */
@@ -62,7 +62,7 @@ public class Panel
         // Se le dice a la ventana que termine el programa cuando se la cierre
         v.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
-        // Se le da un tama–o autom‡tico a la ventana para que quepa todo su
+        // Se le da un tamaño automático a la ventana para que quepa todo su
         // contenido.
         v.pack();
         

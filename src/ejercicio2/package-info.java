@@ -1,6 +1,7 @@
 /**
  * Paquete de Java con todos los ficheros necesarios para
- * el ejercicio 2, de cosas de semaforos supongo.
+ * el ejercicio 2, de suma de matrices haciendo uso de
+ * semáforos para la sincronización de hilos.
  * @author javib
  */
 package ejercicio2;

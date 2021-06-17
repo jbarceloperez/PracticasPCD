@@ -60,10 +60,77 @@ end;
 # EJERCICIO 2 #
 
 program ejercicio2;
+const
+	NUMTHREADS : 20;
+	TAMMATRIX : 10;
 
+var
+	semG, semP, mutex : semaphore;
+	np, ne : integer;
+	hueco : array[0..2] of boolean;
 
+process type HiloMatriz(id : integer, paneles : array[0..3] of Panel);
+var
+	A, B, C : matriz of integer;
+begin
+	repeat 10
+		//genera las matrices A y B
+		tam := random(2,10);	//la suma de matrices es una op entre matrices del mismo tamaño
+		A := generarMatriz(tam);
+		B := generarMatriz(tam);
+		//suma las matrices y guarda el resultado en C
+		for i:=0 to tam do
+			for j:=0 to tam do
+				C[i][j] = A[i][j] + B[i][j];
+		
+		if (tam < 4) then
+		begin	//sincronización
+			wait(semP);
+			//sección crítica
+			paneles[3].escribir_mensaje(C);
+			//fin sección critica
+			signal(semP);
+		end;
+		else
+		begin
+			wait(mutex);	//sincronización	
+			if (np=3) then
+			begin
+				ne++;		// un hilo más esperando
+				signal(mutex); //deja seguir a otros hilos
+				wait(semG);	//se deja el hilo a la espera
+				ne--;		// un hilo menos esperando
+			end;
+			np++;		// un hilo más en sección crítica
+			if (hueco[0]) then i := 0;
+			else if (hueco[1]) then i := 1;
+			else i := 2;
+			hueco[i] := false;	//el panel i pasa a ocupado
+			signal(mutex);	
+			//sección crítica
+			paneles[i].escribir_mensaje(C);
+			//fin seccion crítica
+			wait(mutex);//sincronización
+			np--;	// un hilo más en sección crítica
+			hueco[i] := true;	//el panel i pasa a libre
+			if (ne > 0) then signal(semG);
+			else signal(mutex);
+		end;
+	end;
+end;
 
-
+var
+	thrs : array[1..NUMTHREADS] of HiloMatriz;
+	paneles : array[0..3] of Panel
+	
+begin
+	
+	//inicializar hilos
+	cobegin
+		for i:=0 to NUMTHREADS do
+			HiloMatriz(i, paneles);
+	coend;
+end;
 
 
 
