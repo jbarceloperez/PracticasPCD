@@ -1,0 +1,92 @@
+##################################
+### PSEUDOCÓDIGO PRÁCTICAS PCD ###
+##################################
+
+# EJERCICIO 1 #
+
+program ejercicio1;
+var
+	l: lock;
+
+process type HiloOrdenAlfabetico(id : integer, frases : array[0..49] of string);
+var
+	frase , ordenada: string;
+	palabras : array[] of string;	
+
+begin
+	frase := frases[id];
+	palabras := frase.split(" ");	// se separa la cadena original en un array de cadenas formadas
+									// por las diferentes palabras que la formaban separadas por espacios.
+	palabras.sort();	// se ordenan alfabéticamente las diferentes palabras
+	ordenada := palabras[0];
+	for i:=1 to (palabras.length - 1) do
+		ordenada := ordenada + " " + palabras[i];
+	l.lock;	//sección crítica al imprimir 
+	writeln("Hilo ID: " + id);
+	writeln("Frase original: " + frase);
+	writeln("Frase ordenada: " + ordenada);
+	writeln("Fin hilo ID: " + id);
+	l.unlock; // fin sección crítica
+end;
+	
+
+const
+	NUMTHREADS : 50;
+	NUMFRASES : 50;
+
+var
+	thrs : array[1..NUMTHREADS] of HiloOrdenAlfabetico;
+	frases : array[1..NUMFRASES] of string;
+	
+begin
+	//generar array de 50 frases
+	for i:=1 to NUMFRASES do
+		frases[i] := generarFrase();
+	
+	cobegin
+		for i:=1 to NUMTHREADS do
+			thrs[i](i, frases);
+	coend;
+	// mutex
+	
+	writeln("Array");
+	for i:=1 to NUMFRASES do
+		writeln("Frase ",i,": ", frases[i]);
+	writeln("Fin array");
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

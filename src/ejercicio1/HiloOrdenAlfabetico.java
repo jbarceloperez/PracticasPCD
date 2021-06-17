@@ -44,18 +44,5 @@ public class HiloOrdenAlfabetico implements Runnable{
 		//frases[id] = ordenada;	¿hay que reescribir el array con las frases ordenadas?
 		salida.imprimir(id, frase, ordenada);
 	}
-	
 		
-//    for (int i = 0; i < count; i++) 
-//    {
-//        for (int j = i + 1; j < count; j++) { 
-//            if (str[i].compareTo(str[j])>0) 
-//            {
-//                temp = str[i];
-//                str[i] = str[j];
-//                str[j] = temp;
-//            }
-//        }
-//    }
-	
 }
