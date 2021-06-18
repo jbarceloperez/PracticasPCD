@@ -56,8 +56,11 @@ public class Matriz {
 		for (int i = 0; i < tam; i++) {
 			str = str + "[" + valores[i][0];
 			for (int j = 1; j < tam; j++) {
-				
-				str = str + "\t" + valores[i][j];
+				String espacio;
+				if (valores[i][j-1]<10) espacio = "      ";
+				else if (valores[i][j-1]<100) espacio = "    ";
+				else espacio = "  ";
+				str = str + espacio + valores[i][j];
 			}
 			str = str + "]\n";
 		}

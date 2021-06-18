@@ -29,7 +29,7 @@ public class Panel
     /** El campo de texto */
     private JTextArea t;
     
- 
+    public int n = 0;//debug
     
     
     /**
