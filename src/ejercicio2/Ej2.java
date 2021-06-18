@@ -36,7 +36,7 @@ public class Ej2 {
 			e.printStackTrace();
 		}
 		System.out.println("   -------- Resultados impresos en los paneles --------\n\n");
-		paneles.debugMatrices();
+		//paneles.debugMatrices();
 	}
 }
 

@@ -48,7 +48,11 @@ public class Matriz {
 				c.valores[i][j] = a.valores[i][j] + b.valores[i][j];
 		return c;
 	}
-	
+	/**
+	 * Método que devuelve una cadena con los valores de la
+	 * matriz por filas y columnas en un formato legible.
+	 * @return str cadena con los valores de la matriz.
+	 */
 	@Override
 	public String toString() {
 		String str = "";

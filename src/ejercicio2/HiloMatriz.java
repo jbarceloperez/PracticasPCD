@@ -74,7 +74,7 @@ public class HiloMatriz implements Runnable{
 				paneles.getPanel(3).escribir_mensaje(b.toString() + "\n =");
 				paneles.getPanel(3).escribir_mensaje(c.toString());
 				paneles.getPanel(3).escribir_mensaje("   ----- Fin hilo ID " + id + " -----\n");
-				paneles.getPanel(3).n++;//debug
+				paneles.getPanel(3).n++;	//debug
 				//fin seccion critica
 				Paneles.semP.release();
 			}

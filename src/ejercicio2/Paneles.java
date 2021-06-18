@@ -17,7 +17,7 @@ public class Paneles {
 
 	/**
 	 * El semáforo pequeño de las matrices pequeñas es binario porque
-	sólo hay un posible panel por donde se pueden imprimir.
+	 * sólo hay un posible panel por donde se pueden imprimir.
 	 */
 	
 	public static Semaphore semP = new Semaphore(1);
