@@ -139,26 +139,85 @@ end;
 
 # EJERCICIO 3 #
 
+program Ejercicio3;
 
+monitor monitor();
+const 
+	NUMCAJAS : 3;
+var
+	cajas : array [0..NUMCAJAS-1] of condition;
+	tiempos : array [0..NUMCAJAS-1] of integer;
 
+export
+	entrar_cola, salir_cola, imprimir;
 
+procedure entrar_cola(y : integer)
+var
+	tMin, ncaja : integer;
+// en exclusión mútua porque es un procedimiento de monitor
+begin	
+	min := tiempos[0];
+	for i:=1 to NUMCAJAS do
+		if (min < tiempos[i]) then
+		begin
+			tMin := tiempos[i];
+			ncaja := i;
+		end;
+	tiempos[ncaja] := tiempos[ncaja] + y;
+	if (not tiempos[ncaja] = y)	then //si hay clientes en cola
+		delay(cajas[ncaja]);
+	return ncaja;
+end;
 
+procedure salir_cola(y, ncaja : integer)
+begin	// en mutex
+	tiempos[ncaja] := tiempos[ncaja] - y;
+	resume(cajas[ncaja]);
+end;
 
+procedure imprimir(id, ncaja, x, y : integer)
+begin	//se debe imprimir en exclusión mutua ya
+		//que la salida por pantalla no es compartible
+	writeln("Cliente "+id+" será atendido en caja "+ncaja);
+	writeln("Tiempo de compra "+ x);
+	writeln("Tiempo estimado en caja "+ y);
+	writeln("Tiempo de espera cola1=" + tiempos[0]+
+			",cola2="+tiempos[1]+",cola3="+tiempos[2]);
+end;
 
+begin
+	for i:=0 to NUMCAJAS do
+		tiempos[i] := 0;
+end;
 
+process type HiloCliente(id : integer, monitor : Monitor);
+var
+	x, y, ncaja;
+begin
+	id := id;
+	x := random();
+	y := ranodm();
+	sleep(x); //hacer la compra
+	ncaja := monitor.entrar_cola(y);
+	//sección crítica
+	monitor.imprimir(id, x, y, ncaja)
+	sleep(y);	//pagar en caja
+	//fin sc
+	monitor.salir_cola(y, ncaja);
+end;
 
+const
+	NUMTHREADS : 50;
+var
+	hilos : array [0..NUMTHREADS-1] of HiloCliente;
 
-
-
-
-
-
-
-
-
-
-
-
+begin
+	monitor; //inicializar monitor
+	cobegin	//inicializar los 50 hilos
+		for i:=0 to NUMTHREADS do
+			array[i](i, monitor);
+	coend;
+end;
 
 
 
