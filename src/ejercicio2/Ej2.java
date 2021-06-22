@@ -27,7 +27,7 @@ public class Ej2 {
 		
 		//Llamamos al método join para que este hilo principal no se
 		//siga ejecutando hasta que el resto de los 20 hilos matriz
-		//hayan finalizado su ejecución.
+		//hayan finalizado su ejecución para el debug.
 		try {
 			for (Thread t : hilos)
 				t.join();

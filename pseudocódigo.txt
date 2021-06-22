@@ -139,7 +139,7 @@ end;
 
 # EJERCICIO 3 #
 
-program Ejercicio3;
+program ejercicio3;
 
 monitor monitor();
 const 
@@ -156,9 +156,9 @@ var
 	tMin, ncaja : integer;
 // en exclusión mútua porque es un procedimiento de monitor
 begin	
-	min := tiempos[0];
+	tMin := tiempos[0];
 	for i:=1 to NUMCAJAS do
-		if (min < tiempos[i]) then
+		if (tiempos[i] < tMin) then
 		begin
 			tMin := tiempos[i];
 			ncaja := i;
@@ -215,9 +215,29 @@ begin
 	monitor; //inicializar monitor
 	cobegin	//inicializar los 50 hilos
 		for i:=0 to NUMTHREADS do
-			array[i](i, monitor);
+			hilos[i](i, monitor);
 	coend;
 end;
+
+# Ejercicio 4 #
+
+program ejercicio4;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
