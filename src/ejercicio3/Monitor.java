@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.sun.javafx.scene.traversal.Hueristic2D;
+
 /**
  * Clase que representa al monitor del ejercicio, implementado con
  * las clases ReentrantLock y Condition. Incluye una operación para
@@ -24,11 +26,14 @@ public class Monitor {
 	 */
 	private Condition[] cajas;
 	private ReentrantLock cerrojo = new ReentrantLock();
+	private Boolean[] pagando;
+	private int[] esperando;
 
 //debug
 	private LinkedList<Integer> cola1 = new LinkedList<Integer>();
 	private LinkedList<Integer> cola2 = new LinkedList<Integer>();
 	private LinkedList<Integer> cola3 = new LinkedList<Integer>();
+	private int[] debug_cajas;
 	
 	/**
 	 * Constructor del monitor, que inicializa los arrays
@@ -37,10 +42,34 @@ public class Monitor {
 	public Monitor() {
 		tiempos = new int[NUMCAJAS];
 		cajas = new Condition[NUMCAJAS];
+		pagando = new Boolean[NUMCAJAS];
+		esperando = new int[NUMCAJAS];
+		debug_cajas = new int[NUMCAJAS];
 		for (int i = 0; i < NUMCAJAS; i++) {
 			tiempos[i] = 0;
 			cajas[i] = cerrojo.newCondition();
+			pagando[i] = false;
+			esperando[i] = 0;
+			debug_cajas[i] = -999;
 		}
+	}
+	
+	
+	public int buscar_cola(int id, int x, int y) {
+		cerrojo.lock();
+		try {
+			int ncaja = 0;
+			int tMin = tiempos[0];
+			for (int i = 1; i < NUMCAJAS; i++)
+				if (tiempos[i] < tMin) {
+					tMin = tiempos[i];
+					ncaja = i;
+				}
+			this.imprimir(id, x, y, ncaja); //antes de ponerse en cola imprime
+			tiempos[ncaja] = tiempos[ncaja] + y;
+			debug1(y, ncaja);
+			return ncaja;
+		} finally {cerrojo.unlock();}
 	}
 	
 	/**
@@ -61,31 +90,21 @@ public class Monitor {
 	 * @return el entero correspondiente a la cola a la que se une el cliente.
 	 * @throws InterruptedException si el hilo actual es interrumpido y pusto en suspensión.
 	 */
-	public int entrar_cola(int id, int x, int y) throws InterruptedException {
+	public void entrar_cola(int ncaja, int y, int id_debug) throws InterruptedException {
 		cerrojo.lock();
-		try {
-			int ncaja = 0;
-			int tMin = tiempos[0];
-			for (int i = 1; i < NUMCAJAS; i++) 
-				if (tiempos[i] < tMin) {
-					tMin = tiempos[i];
-					ncaja = i;
-				}
-			this.imprimir(id, x, y, ncaja); //antes de ponerse en cola imprime
-			tiempos[ncaja] +=y;
-			//debug
-			if (ncaja==0) cola1.add(y);
-			if (ncaja==1) cola2.add(y);
-			if (ncaja==2) cola3.add(y);
-			System.out.println("[CAJA1]: " + cola1.toString());
-			System.out.println("[CAJA2]: " + cola2.toString());
-			System.out.println("[CAJA3]: " + cola3.toString());
-			while (cerrojo.hasWaiters(cajas[ncaja]))	// si ya hay clientes en cola
+		try {		
+			while (pagando[ncaja]) {	// si ya hay clientes en cola
 				cajas[ncaja].await();
-			return ncaja;
+			}
+			
+			pagando[ncaja] = true;
+			
+			debug3(ncaja, y, id_debug);
+			
 		} finally {cerrojo.unlock();}
 	}
-	
+
+
 	/**
 	 * Método por el cual un hilo cliente deja de "estar en caja", liberando así una
 	 * de las tres cajas. El método primero resta el tiempo que ha estado el cliente
@@ -97,18 +116,15 @@ public class Monitor {
 	public void salir_cola(int y, int ncaja) {
 		cerrojo.lock();
 		try {
-			tiempos[ncaja] -= y;
-			System.out.printf("Avanza caja %d [%d]\n", ncaja+1, y);//debug
-			if (ncaja==0) cola1.remove();
-			if (ncaja==1) cola2.remove();
-			if (ncaja==2) cola3.remove();
-			System.out.println("[CAJA1]: " + cola1.toString());
-			System.out.println("[CAJA2]: " + cola2.toString());
-			System.out.println("[CAJA3]: " + cola3.toString());
-			cajas[ncaja].signalAll();
+			tiempos[ncaja] = tiempos[ncaja] - y;
+			
+			debug2(y, ncaja);
+			
+			pagando[ncaja] = false;
+			cajas[ncaja].signalAll();		
 		} finally {cerrojo.unlock();}
 	}
-	
+
 	/**
 	 * Método para que cada hilo imprima en exclusión mutua la información de su cliente
 	 * y del estado de las cajas en el momento de entrar a una cola.
@@ -125,5 +141,39 @@ public class Monitor {
 		System.out.println("Tiempo estimado en caja: " + y);
 		System.out.println("Tiempo de espera cola1=" + tiempos[0] + ", cola2="
 							+ tiempos[1] + ", cola3=" + tiempos[2]);
+	}
+
+
+	private void debug1(int y, int ncaja) {
+		//debug
+		if (ncaja==0) cola1.add(y);
+		if (ncaja==1) cola2.add(y);
+		if (ncaja==2) cola3.add(y);
+		System.out.println("[CAJA1]: " + cola1.toString());
+		System.out.println("[CAJA2]: " + cola2.toString());
+		System.out.println("[CAJA3]: " + cola3.toString());
+		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
+	}
+	
+	
+	private void debug2(int y, int ncaja) {
+		int aux = ncaja + 1;
+		System.out.printf("Avanza caja %d [%d]\n", aux, y);//debug
+		if (ncaja==0) cola1.remove();
+		if (ncaja==1) cola2.remove();
+		if (ncaja==2) cola3.remove();
+		System.out.println("[CAJA1]: " + cola1.toString());
+		System.out.println("[CAJA2]: " + cola2.toString());
+		System.out.println("[CAJA3]: " + cola3.toString());
+		debug_cajas[ncaja] = -999;
+		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
+	}
+	
+
+	private void debug3(int ncaja, int y, int id_debug) {
+		int aux = ncaja + 1;
+		System.out.println(id_debug + " ENTRO A CAJA " + aux + " CON " + y); //debug
+		debug_cajas[ncaja] = id_debug;
+		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
 	}
 }

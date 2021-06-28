@@ -8,7 +8,7 @@ import java.util.Random;
  * @author javib
  */
 public class HiloCliente extends Thread{
-	public static final int MAXCOMPRA = 200; //milisegundos
+	public static final int MAXCOMPRA = 100; //milisegundos
 	public static final int MAXPAGO = 20; //milisegundos
 	
 	private int id, x, y;
@@ -51,7 +51,8 @@ public class HiloCliente extends Thread{
 		try {
 			//hacer la compra x milisegundos
 			sleep(x);
-			int caja = m.entrar_cola(id, x, y);
+			int caja = m.buscar_cola(id, x, y);
+			m.entrar_cola(caja, y, id);
 			//seccion critica: pagar en caja
 			sleep(y);
 			//fin sc
