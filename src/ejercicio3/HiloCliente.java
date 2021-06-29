@@ -27,7 +27,7 @@ public class HiloCliente extends Thread{
 	 */
 	public HiloCliente(int id, Monitor monitor) {
 		m = monitor;
-		this.id = id;
+		this.id = id+1;
 		Random r = new Random();
 		x = r.nextInt(MAXCOMPRA)+1;
 		y = r.nextInt(MAXPAGO)+1;
