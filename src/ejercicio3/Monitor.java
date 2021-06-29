@@ -80,7 +80,7 @@ public class Monitor {
 			System.out.println("[CAJA1]: " + cola1.toString());
 			System.out.println("[CAJA2]: " + cola2.toString());
 			System.out.println("[CAJA3]: " + cola3.toString());
-			while (cerrojo.hasWaiters(cajas[ncaja]))	// si ya hay clientes en cola
+			if (tiempos[ncaja] != y)	// si ya hay clientes en cola
 				cajas[ncaja].await();
 			return ncaja;
 		} finally {cerrojo.unlock();}
@@ -105,11 +105,11 @@ public class Monitor {
 			System.out.println("[CAJA1]: " + cola1.toString());
 			System.out.println("[CAJA2]: " + cola2.toString());
 			System.out.println("[CAJA3]: " + cola3.toString());
-			cajas[ncaja].signalAll();
+			cajas[ncaja].signal();
 		} finally {cerrojo.unlock();}
 	}
 	
-	/**
+	/**ªª
 	 * Método para que cada hilo imprima en exclusión mutua la información de su cliente
 	 * y del estado de las cajas en el momento de entrar a una cola.
 	 * @param id entero con el id del hilo.
