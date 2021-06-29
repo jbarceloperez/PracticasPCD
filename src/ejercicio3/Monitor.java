@@ -26,11 +26,11 @@ public class Monitor {
 	private ReentrantLock cerrojo = new ReentrantLock();
 
 //debug
-	
-	private int[] debug_cajas;
-	private LinkedList<Integer> cola1 = new LinkedList<Integer>();
-	private LinkedList<Integer> cola2 = new LinkedList<Integer>();
-	private LinkedList<Integer> cola3 = new LinkedList<Integer>();
+//	
+//	private int[] debug_cajas;
+//	private LinkedList<Integer> cola1 = new LinkedList<Integer>();
+//	private LinkedList<Integer> cola2 = new LinkedList<Integer>();
+//	private LinkedList<Integer> cola3 = new LinkedList<Integer>();
 	
 	/**
 	 * Constructor del monitor, que inicializa los arrays
@@ -39,11 +39,11 @@ public class Monitor {
 	public Monitor() {
 		tiempos = new int[NUMCAJAS];
 		cajas = new Condition[NUMCAJAS];
-		debug_cajas = new int[NUMCAJAS];
+//		debug_cajas = new int[NUMCAJAS];
 		for (int i = 0; i < NUMCAJAS; i++) {
 			tiempos[i] = 0;
 			cajas[i] = cerrojo.newCondition();
-			debug_cajas[i] = 0;
+//			debug_cajas[i] = 0;
 		}
 	}
 
@@ -134,37 +134,37 @@ public class Monitor {
 		System.out.println("Tiempo de espera cola1=" + tiempos[0] + ", cola2="
 							+ tiempos[1] + ", cola3=" + tiempos[2]);
 	}
-	
-	private void debug1(int y, int ncaja) {
-		//debug
-		if (ncaja==0) cola1.add(y);
-		if (ncaja==1) cola2.add(y);
-		if (ncaja==2) cola3.add(y);
-		System.out.println("[CAJA1]: " + cola1.toString());
-		System.out.println("[CAJA2]: " + cola2.toString());
-		System.out.println("[CAJA3]: " + cola3.toString());
-		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
-	}
-	
-	
-	private void debug2(int y, int ncaja) {
-		int aux = ncaja + 1;
-		System.out.printf("Avanza caja %d [%d]\n", aux, y);//debug
-		if (ncaja==0) cola1.remove();
-		if (ncaja==1) cola2.remove();
-		if (ncaja==2) cola3.remove();
-		System.out.println("[CAJA1]: " + cola1.toString());
-		System.out.println("[CAJA2]: " + cola2.toString());
-		System.out.println("[CAJA3]: " + cola3.toString());
-		debug_cajas[ncaja] = 0;
-		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
-	}
-	
-
-	private void debug3(int ncaja, int y, int id_debug) {
-		int aux = ncaja + 1;
-		System.out.println(id_debug + " ENTRO A CAJA " + aux + " CON " + y); //debug
-		debug_cajas[ncaja] = id_debug;
-		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
-	}
+//	
+//	private void debug1(int y, int ncaja) {
+//		//debug
+//		if (ncaja==0) cola1.add(y);
+//		if (ncaja==1) cola2.add(y);
+//		if (ncaja==2) cola3.add(y);
+//		System.out.println("[CAJA1]: " + cola1.toString());
+//		System.out.println("[CAJA2]: " + cola2.toString());
+//		System.out.println("[CAJA3]: " + cola3.toString());
+//		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
+//	}
+//	
+//	
+//	private void debug2(int y, int ncaja) {
+//		int aux = ncaja + 1;
+//		System.out.printf("Avanza caja %d [%d]\n", aux, y);//debug
+//		if (ncaja==0) cola1.remove();
+//		if (ncaja==1) cola2.remove();
+//		if (ncaja==2) cola3.remove();
+//		System.out.println("[CAJA1]: " + cola1.toString());
+//		System.out.println("[CAJA2]: " + cola2.toString());
+//		System.out.println("[CAJA3]: " + cola3.toString());
+//		debug_cajas[ncaja] = 0;
+//		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
+//	}
+//	
+//
+//	private void debug3(int ncaja, int y, int id_debug) {
+//		int aux = ncaja + 1;
+//		System.out.println(id_debug + " ENTRO A CAJA " + aux + " CON " + y); //debug
+//		debug_cajas[ncaja] = id_debug;
+//		System.out.println("Cajas: [" + debug_cajas[0] + "][" + debug_cajas[1] + "][" + debug_cajas[2] + "]");
+//	}
 }

@@ -139,15 +139,15 @@ public class Paneles {
 		huecos[i] = true;
 	}
 	
-//	public void debugMatrices() {	//debug
+	public void debugMatrices() {	//debug
 //		paneles[0].escribir_mensaje(" > Nº de matrices calculadas: [" + paneles[0].n + "]");
 //		paneles[1].escribir_mensaje(" > Nº de matrices calculadas: [" + paneles[1].n + "]");
 //		paneles[2].escribir_mensaje(" > Nº de matrices calculadas: [" + paneles[2].n + "]");
 //		paneles[3].escribir_mensaje(" > Nº de matrices calculadas: [" + paneles[3].n + "]");
-//		System.out.println(" > Nº de matrices calculadas: [" + paneles[0].n + "]");
-//		System.out.println(" > Nº de matrices calculadas: [" + paneles[1].n + "]");
-//		System.out.println(" > Nº de matrices calculadas: [" + paneles[2].n + "]");
-//		System.out.println(" > Nº de matrices calculadas: [" + paneles[3].n + "]");
-//	}
+		System.out.println(" > Nº de matrices calculadas panel 0: [" + paneles[0].n + "]");
+		System.out.println(" > Nº de matrices calculadas panel 1: [" + paneles[1].n + "]");
+		System.out.println(" > Nº de matrices calculadas panel 2: [" + paneles[2].n + "]");
+		System.out.println(" > Nº de matrices calculadas panel 3: [" + paneles[3].n + "]");
+	}
 	
 }
