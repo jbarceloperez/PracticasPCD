@@ -149,7 +149,7 @@ var
 	tiempos : array [0..NUMCAJAS-1] of integer;
 
 export
-	entrar_cola, salir_cola, imprimir;
+	entrar_cola, salir_cola;
 
 procedure entrar_cola(y : integer)
 var
@@ -163,6 +163,7 @@ begin
 			tMin := tiempos[i];
 			ncaja := i;
 		end;
+	monitor.imprimir(id, x, y, ncaja)
 	tiempos[ncaja] := tiempos[ncaja] + y;
 	if (not tiempos[ncaja] = y)	then //si hay clientes en cola
 		delay(cajas[ncaja]);
@@ -175,7 +176,7 @@ begin	// en mutex
 	resume(cajas[ncaja]);
 end;
 
-procedure imprimir(id, ncaja, x, y : integer)
+procedure imprimir(id, x, y, ncaja : integer)
 begin	//se debe imprimir en exclusión mutua ya
 		//que la salida por pantalla no es compartible
 	writeln("Cliente "+id+" será atendido en caja "+ncaja);
@@ -200,7 +201,6 @@ begin
 	sleep(x); //hacer la compra
 	ncaja := monitor.entrar_cola(y);
 	//sección crítica
-	monitor.imprimir(id, x, y, ncaja)
 	sleep(y);	//pagar en caja
 	//fin sc
 	monitor.salir_cola(y, ncaja);
