@@ -276,7 +276,8 @@ begin
 						if (grupo[i] != id) then
 							send(sincJuego[grupo[i]], null);	//avisa que han perdido
 					send(sigJuego, id);	//avisa al servidor de la victoria
-					pasa := true; // pasa al siguiente juego
+					if(ids.length > 2) then
+						pasa := true; // pasa al siguiente juego si no es la final
 				end;
 				else	// si ha ganado un hilo distinto al que saca el ganador
 				begin
@@ -297,7 +298,8 @@ begin
 					recieve(ganadores[id]);	//es ganador
 					imprimir();
 					send(sigJuego, id);	//avisa al servidor de la victoria
-					pasa := true;	// pasa al siguiente juego
+					if(ids.length > 2) then
+						pasa := true;	// pasa al siguiente juego si no es la final
 				end select;
 			end;
 		while(pasa);

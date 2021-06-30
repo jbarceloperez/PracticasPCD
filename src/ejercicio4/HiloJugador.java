@@ -59,7 +59,8 @@ public class HiloJugador implements Runnable{
 							if (clave != id) //avisa a los perdedores de que han perdido
 								sincJuego[clave].send(null);
 						sigJuego.send(id); //avisar al servidor de q ha ganado
-						pasa = true; // se tiene q ejecutar una iteracion mas para el siguiente juego
+						if(ids.length > 2)
+							pasa = true; // se tiene q ejecutar una iteracion mas para el siguiente juego, solo si no es la final
 					} else { //si ha ganado un hilo diferente 
 						for (int clave : juego.keySet())
 							if (clave != id) //avisa a los otros hilos si han ganado o no
@@ -70,7 +71,7 @@ public class HiloJugador implements Runnable{
 					}
 				} else { // como no es el hilo con el id mas pequeño del grupo, solo manda el valor y espera
 					sincJuego[min].send(new Mensaje(id, valor));
-					switch (s.selectOrBlock()) {
+					switch (s.selectOrBlock()) {	//se espera en el select a recibir el resultado
 					case 1:
 						sincJuego[id].receive();
 						break;
@@ -78,7 +79,8 @@ public class HiloJugador implements Runnable{
 						Mensaje m = (Mensaje) ganadores[id].receive();
 						imprimir(pantalla, m.getLista());
 						sigJuego.send(id); //avisar al servidor de q ha ganado
-						pasa = true;	// se tiene q ejecutar una iteracion mas para el siguiente juego
+						if(ids.length > 2)
+							pasa = true;	// se tiene q ejecutar una iteracion mas para el siguiente juego, solo si no es la final
 						break;
 					}
 				}

@@ -49,7 +49,6 @@ public class HiloServidor implements Runnable{
 				for (int j = 0; j < ids.length; j++) 
 					ids[j] = semis[j+(4*i)];
 				for (int j = 0; j < ids.length; j++) {
-					System.out.println(ids[j]);//debug
 					buzones[ids[j]].send(ids);} //enviar su grupo a cada jugador
 			}
 			//debug
@@ -59,17 +58,19 @@ public class HiloServidor implements Runnable{
 			finalJ[1] = (int) sigJuego.receive();
 			//enviar su grupo a cada finalista
 			buzones[finalJ[0]].send(finalJ); 
-			buzones[finalJ[1]].send(finalJ); 
+			buzones[finalJ[1]].send(finalJ);
+			//debug
+			System.out.println("\nRONDA FINAL");
 			//esperar al ganador e imprimir
 			int ganador = (int)sigJuego.receive();
 			pantalla.receive();	//se accede a la pantalla en EXCLUSION MUTUA
 			System.out.println("________________________________________");
 			System.out.println("Hilo Servidor.");
-			System.out.println("El ganador del juego número " + npartida + " es el hilo con el id " + ganador);
+			System.out.println("El ganador del juego número " + npartida + " es el hilo con el id " + ganador + "\n\n");
 			pantalla.send(0);	//se libera la pantalla
 			npartida++;
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
