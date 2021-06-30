@@ -26,8 +26,8 @@ public class HiloServidor implements Runnable{
 	
 	/**
 	 * Constructor que inicializa el atributo {@code npartida} a 1, e
-	 * inicializa también el resto de buzones con los pasados como
-	 * parámetro.
+	 * inicializa tambiï¿½n el resto de buzones con los pasados como
+	 * parï¿½metro.
 	 * @param _server buzon por el que entran solicitudes de juego de los jugadores
 	 * @param _sigJuego buzon por el que entran los resultados de los juegos
 	 * @param _pantalla buzones con los que el servidor envia los grupos a los jugadores
@@ -42,17 +42,17 @@ public class HiloServidor implements Runnable{
 	}
 
 	/**
-	 * Gracias al {@code while(true)} está constantemente en ejecución. El servidor
+	 * Gracias al {@code while(true)} estï¿½ constantemente en ejecuciï¿½n. El servidor
 	 * espera en las sentencias recieve hasta que 32 jugadores han solicitado jugar
-	 * por el buzón {@code server}.
+	 * por el buzï¿½n {@code server}.
 	 * <p>Entonces inicia la primera partida, agrupando en grupos de 4 a los jugadores
 	 * y enviando un array con los ids de cada jugador de su grupo a cada jugador.
-	 * Después espera por el buzón {@code sigJuego} los resultados de los 8 juegos, y cuando
-	 * los tiene realiza el mismo proceso de separación en dos grupos de 4, y posterior
-	 * envío de ids a los semifinalistas. Tras eso, espera los resultados de las dos
+	 * Despuï¿½s espera por el buzï¿½n {@code sigJuego} los resultados de los 8 juegos, y cuando
+	 * los tiene realiza el mismo proceso de separaciï¿½n en dos grupos de 4, y posterior
+	 * envï¿½o de ids a los semifinalistas. Tras eso, espera los resultados de las dos
 	 * semifinales, y agrupa a los dos finalistas en un solo grupo, para que compitan
 	 * ellos dos solos.
-	 * <p>Por último, después de recibir un ganador de entre los dos finalistas, imprime
+	 * <p>Por ï¿½ltimo, despuï¿½s de recibir un ganador de entre los dos finalistas, imprime
 	 * por pantalla el resultado de la partida, aumenta en uno la cuenta de partidas y vuelve
 	 * a empezar.
 	 */
@@ -95,15 +95,15 @@ public class HiloServidor implements Runnable{
 			pantalla.receive();	//se accede a la pantalla en EXCLUSION MUTUA
 			System.out.println("________________________________________");
 			System.out.println("Hilo Servidor.");
-			System.out.println("El ganador del juego número " + npartida + " es el hilo con el id " + ganador + "\n\n");
+			System.out.println("El ganador del juego nï¿½mero " + npartida + " es el hilo con el id " + ganador + "\n\n");
 			pantalla.send(0);	//se libera la pantalla
 			npartida++;
 			
-			try { // debug, pa frenar un poco el torrente de partidas 
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			// try { // debug, pa frenar un poco el torrente de partidas 
+			// 	Thread.sleep(500);
+			// } catch (InterruptedException e) {
+			// 	e.printStackTrace();
+			// }
 			
 		}
 	}
