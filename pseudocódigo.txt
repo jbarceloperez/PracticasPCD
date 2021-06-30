@@ -219,9 +219,118 @@ begin
 	coend;
 end;
 
+
+
 # Ejercicio 4 #
 
 program ejercicio4;
+const
+	NJUGADORES : 32;
+	NHILOS : 100;
+	
+process type Jugador(id : integer, server : MailBox, miBuzon : MailBox, sincJuego : array[1..NHILOS] of MailBox, ganadores : array[1..NHILOS] of MailBox);
+const
+	RANGONUMEROS : 100;
+
+procedure getGanador(resul, grupo : array[0..3] of integer);
+var
+	ganador, valor : integer;
+begin
+	valor := 0;
+	for i:=0 to 3 do
+		if (resul[i] > valor) then	//se selecciona el valor mas grande
+		begin
+			ganador:=grupo[i];
+			valor:=resul[i];
+		end;	
+		else if ((resul[i] = valor) and (grupo[i] > ganador)) then
+			ganador := grupo[i];	//si hay empate, gana el id mayor
+	return ganador;
+end;
+
+var
+	ids : array[0..3] of integer;
+	valor : integer;
+begin
+	send(server, id);	//le digo al server q quiero jugar
+	recieve(miBuzon, ids);	//recibo los ids de mis contrincantes
+	valor := random(1,RANGONUMEROS);	//se genera el valor del juego
+	min = minimo(ids);
+	if (id = min) then
+	begin	//el de menor id se encarga de sacar el ganador y avisar al resto
+		resul := array[0..3] of int;
+		grupo := array[0..3] of int;
+		resul[0] := valor;
+		grupo[0] := id;
+		for i:=1 to 3 do
+				recieve(sincJuego[id], [grupo[i], resul[i]]);
+		ganador := getGanador(resul);
+		if (ganador = id) then	// si ha ganado el mismo hilo que saca el ganador
+		begin
+			imprimir();
+			for i:=0 to 3 do
+				if (i != id) then
+					send(sincJuego[i], null);	//avisa que han perdido
+			send(server, id);	//avisa al servidor que la victoria
+		end;
+		else	// si ha ganado un hilo distinto al que saca el ganador
+		begin
+			for i:=0 to 3 do
+				if (i != id) then
+					if (i = ganador) then
+						send(ganadores[i], null); //avisa que ha ganado
+					else
+						send(sincJuego[i], null); //avisa que han perdido
+		end;
+	end;
+	else	// si no les toca sacar el ganador, solo envian su valor e id y esperan
+	begin
+		send(sincJuego[min], [id, valor]);
+		select
+			recieve(sincJuego[id]);	//no es ganador
+		or 
+			recieve(ganadores[id]);	//es ganador
+			imprimir();
+			send(server, id);	//avisa al servidor que la victoria
+		end select;
+	end;	
+end;
+
+process type Servidor(server : MailBox, buzones : array[1..HILOS] of MailBox);
+const
+	NJUGADORES : 32;
+var
+	jugadores : array[0..NJUGADORES-1] of integer;
+	
+begin
+	for i:=0 to NJUGADORES-1 do	//obtener las ids de los 32 jugadores
+		recieve(server, jugadores[i]);
+	//hacer los grupos
+	//enviar los grupos a cada buzon
+	
+	//esperar la segunda ronda
+	//hacer los grupos
+	//enviar los grupos a cada buzon
+
+end;
+
+
+var
+	pantalla, server : MailBox;
+	buzones, sincJuego, ganadores : array[1..HILOS] of MailBox;
+	hilos : array[1..NHILOS] of Jugador;
+	servidor : Servidor;
+
+begin
+	send(pantalla, 0);	//para q el primer hilo pueda usar la pantalla en mutex
+	cobegin
+		servidor := Servidor();	//inicializar hilo servidor
+		for i:=1 to NHILOS do
+			hilos[i](i, server, buzones[i], sincJuego, ganadores);	//inicializar hilos Jugador
+	coend;
+end;
+
+
 
 
 
