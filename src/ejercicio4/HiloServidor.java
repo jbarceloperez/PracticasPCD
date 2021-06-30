@@ -95,7 +95,7 @@ public class HiloServidor implements Runnable{
 			pantalla.receive();	//se accede a la pantalla en EXCLUSION MUTUA
 			System.out.println("________________________________________");
 			System.out.println("Hilo Servidor.");
-			System.out.println("El ganador del juego nï¿½mero " + npartida + " es el hilo con el id " + ganador + "\n\n");
+			System.out.println("El ganador del juego número " + npartida + " es el hilo con el id " + ganador + "\n\n");
 			pantalla.send(0);	//se libera la pantalla
 			npartida++;
 			
